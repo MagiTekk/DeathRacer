@@ -13,7 +13,31 @@ class DEATHRACER_API ABasicVehicle : public AWheeledVehicle
 {
 	GENERATED_BODY()
 	
-	
-	
-	
+public:
+
+	ABasicVehicle();
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	// Called every frame
+	virtual void Tick(float DeltaSeconds) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
+
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
+		//UStaticMeshComponent* VehicleMesh;
+
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+		//USpringArmComponent* SpringArm;
+
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+		//UCameraComponent* Camera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
+		UChildActorComponent* MachineGun;
+
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
+		//TArray
 };
