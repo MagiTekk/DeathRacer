@@ -21,6 +21,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
+		UStaticMeshComponent* WeaponMesh;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Behavior")
 	class UWeaponBehavior* WeaponBehavior;
 

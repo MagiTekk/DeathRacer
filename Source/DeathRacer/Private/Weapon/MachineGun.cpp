@@ -7,8 +7,8 @@
 
 AMachineGun::AMachineGun()
 {
-	//MachineGunMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MachineGunMesh"));
-	//MachineGunMesh->SetStaticMesh();
+	//WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MachineGunMesh"));
+	//WeaponMesh->SetStaticMesh();
 }
 
 void AMachineGun::BeginPlay()

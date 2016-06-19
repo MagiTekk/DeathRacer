@@ -3,19 +3,19 @@
 #pragma once
 
 #include "Weapon/Weapon.h"
-#include "MachineGun.generated.h"
+#include "MissileLauncher.generated.h"
 
 /**
- * 
- */
+*
+*/
 UCLASS()
-class DEATHRACER_API AMachineGun : public AWeapon
+class DEATHRACER_API AMissileLauncher : public AWeapon
 {
 	GENERATED_BODY()
-	
+
 public:
 
-	AMachineGun();
+	AMissileLauncher();
 
 	// Called when the game starts
 	virtual void BeginPlay() override;

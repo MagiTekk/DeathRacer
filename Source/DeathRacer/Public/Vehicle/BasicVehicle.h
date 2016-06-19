@@ -41,7 +41,7 @@ public:
 		UChildActorComponent* ActiveWeapon;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
-		TArray<class UWeapon*> WeaponArray;
+		TArray<class AWeapon*> WeaponArray;
 
 #pragma endregion
 
