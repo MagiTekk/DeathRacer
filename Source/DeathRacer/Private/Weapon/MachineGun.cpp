@@ -5,21 +5,22 @@
 #include "MachineGun.h"
 
 
-UMachineGun::UMachineGun()
+AMachineGun::AMachineGun()
 {
 	//MachineGunMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MachineGunMesh"));
 	//MachineGunMesh->SetStaticMesh();
 }
 
-void UMachineGun::BeginPlay()
+void AMachineGun::BeginPlay()
 {
-	Super::SetWeaponBehavior(new UNormalGunBehavior());
+	UNormalGunBehavior* GunBehavior = NewObject<UNormalGunBehavior>(this, UNormalGunBehavior::StaticClass());
+	Super::SetWeaponBehavior(GunBehavior);
 }
 
-void UMachineGun::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+// Called every frame
+void AMachineGun::Tick(float DeltaTime)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	Super::Tick(DeltaTime);
 
-	// ...
 }
 

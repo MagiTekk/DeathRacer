@@ -7,24 +7,28 @@
 
 ABasicVehicle::ABasicVehicle()
 {
-	//ConstructorHelpers::FObjectFinder<UStaticMesh> vehicleMesh(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
-	//VehicleMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VehicleMesh"));
-	//VehicleMesh->SetStaticMesh(vehicleMesh.Object);
-	//this->SetRootComponent(VehicleMesh);
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm->AttachTo(RootComponent);
+	//SpringArm->TargetArmLength = 300.0f;
+
+	MainCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("MainCamera"));
+	MainCamera->AttachTo(SpringArm, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
+	MainCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	MachineGun = CreateDefaultSubobject<UChildActorComponent>(TEXT("MachineGun"));
-	MachineGun->SetChildActorClass(UMachineGun::StaticClass());
-	//FAttachmentTransformRules AttachmentRules(EAttachmentRule::KeepRelative, true);
-	//MachineGun->AttachToComponent(VehicleMesh, AttachmentRules);
-	//this->SetRootComponent(MachineGun);
-	//MachineGun->AttachTo(VehicleMesh);
+	MachineGun->SetChildActorClass(AMachineGun::StaticClass());
+	MachineGun->AttachTo(RootComponent);
+
+	ActiveWeapon = CreateDefaultSubobject<UChildActorComponent>(TEXT("ActiveWeapon"));
+	ActiveWeapon->SetChildActorClass(AWeapon::StaticClass());
+	ActiveWeapon->AttachTo(RootComponent);
 }
 
 void ABasicVehicle::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	UMachineGun* MachineGunActor = Cast<UMachineGun>(MachineGun->GetChildActor());
+	AMachineGun* MachineGunActor = Cast<AMachineGun>(MachineGun->GetChildActor());
 	if (MachineGunActor)
 	{
 		MachineGunActor->PerformFireWeapon();

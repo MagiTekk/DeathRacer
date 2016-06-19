@@ -9,19 +9,19 @@
  * 
  */
 UCLASS()
-class DEATHRACER_API UMachineGun : public UWeapon
+class DEATHRACER_API AMachineGun : public AWeapon
 {
 	GENERATED_BODY()
 	
 public:
 
-	UMachineGun();
+	AMachineGun();
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void Tick(float DeltaSeconds) override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
 		UStaticMeshComponent* MachineGunMesh;

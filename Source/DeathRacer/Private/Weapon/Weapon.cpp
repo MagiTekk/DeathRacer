@@ -6,40 +6,32 @@
 
 
 // Sets default values for this component's properties
-UWeapon::UWeapon()
+AWeapon::AWeapon()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	bWantsBeginPlay = true;
-	PrimaryComponentTick.bCanEverTick = true;
-	// ...
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
 }
 
-
 // Called when the game starts
-void UWeapon::BeginPlay()
+void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
 	
 }
 
-
 // Called every frame
-void UWeapon::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
+void AWeapon::Tick(float DeltaTime)
 {
-	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
+	Super::Tick(DeltaTime);
 
-	// ...
 }
 
-void UWeapon::PerformFireWeapon()
+void AWeapon::PerformFireWeapon()
 {
 	WeaponBehavior->FireWeapon();
 }
 
-void UWeapon::SetWeaponBehavior(UWeaponBehavior* NewWeaponBehavior)
+void AWeapon::SetWeaponBehavior(UWeaponBehavior* NewWeaponBehavior)
 {
 	WeaponBehavior = NewWeaponBehavior;
 }
