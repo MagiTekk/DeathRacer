@@ -13,5 +13,11 @@ public:
 	UWeaponBehavior();
 
 	virtual void FireWeapon();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Target")
+		AActor* SourceActor;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Target")
+		AActor* TargetActor;
 };
 

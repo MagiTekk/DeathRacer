@@ -14,6 +14,7 @@ AMachineGun::AMachineGun()
 void AMachineGun::BeginPlay()
 {
 	UNormalGunBehavior* GunBehavior = NewObject<UNormalGunBehavior>(this, UNormalGunBehavior::StaticClass());
+	GunBehavior->SourceActor = this;
 	Super::SetWeaponBehavior(GunBehavior);
 }
 

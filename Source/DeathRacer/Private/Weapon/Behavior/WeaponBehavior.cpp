@@ -4,7 +4,7 @@
 
 UWeaponBehavior::UWeaponBehavior()
 {
-
+	
 }
 
 void UWeaponBehavior::FireWeapon()
