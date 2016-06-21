@@ -8,26 +8,26 @@
 ABasicVehicle::ABasicVehicle()
 {
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	SpringArm->AttachTo(RootComponent);
+	SpringArm->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	//SpringArm->TargetArmLength = 300.0f;
 
 	MainCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("MainCamera"));
-	MainCamera->AttachTo(SpringArm, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
+	MainCamera->AttachToComponent(SpringArm, FAttachmentTransformRules::KeepRelativeTransform, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	MainCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	MachineGun = CreateDefaultSubobject<UChildActorComponent>(TEXT("MachineGun"));
 	MachineGun->SetChildActorClass(AMachineGun::StaticClass());
-	MachineGun->AttachTo(RootComponent);
+	MachineGun->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	ActiveWeapon = CreateDefaultSubobject<UChildActorComponent>(TEXT("ActiveWeapon"));
 	ActiveWeapon->SetChildActorClass(AWeapon::StaticClass());
-	ActiveWeapon->AttachTo(RootComponent);
+	ActiveWeapon->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void ABasicVehicle::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	AMachineGun* MachineGunActor = Cast<AMachineGun>(MachineGun->GetChildActor());
 	if (MachineGunActor)
 	{

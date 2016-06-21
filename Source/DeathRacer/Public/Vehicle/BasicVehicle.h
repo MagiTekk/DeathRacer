@@ -6,13 +6,13 @@
 #include "BasicVehicle.generated.h"
 
 /**
- * 
- */
+*
+*/
 UCLASS()
 class DEATHRACER_API ABasicVehicle : public AWheeledVehicle
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	ABasicVehicle();
@@ -29,10 +29,10 @@ public:
 #pragma region Components
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
-		USpringArmComponent* SpringArm;
+		class USpringArmComponent* SpringArm;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
-		UCameraComponent* MainCamera;
+		class UCameraComponent* MainCamera;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
 		UChildActorComponent* MachineGun;
@@ -45,5 +45,5 @@ public:
 
 #pragma endregion
 
-	
+
 };

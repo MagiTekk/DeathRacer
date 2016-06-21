@@ -33,8 +33,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
 		UStaticMeshComponent* BulletMesh;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Explosion")
-		AActor* Explosion;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
+		USphereComponent* CollisionSphere;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
+		UProjectileMovementComponent* ProjectileMovement;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Material")
 		UMaterialInstanceDynamic* DynamicInstance;
