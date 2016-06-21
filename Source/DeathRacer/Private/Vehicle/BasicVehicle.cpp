@@ -7,20 +7,29 @@
 
 ABasicVehicle::ABasicVehicle()
 {
+
+	//Mesh->SetSkeletalMesh()
+
+
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-	//SpringArm->TargetArmLength = 300.0f;
+	SpringArm->SetRelativeLocation(FVector(0,0,250));
+	SpringArm->AddLocalRotation(FRotator(-10, 0, 0));
+	SpringArm->TargetArmLength = 500.0f;
 
 	MainCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("MainCamera"));
 	MainCamera->AttachToComponent(SpringArm, FAttachmentTransformRules::KeepRelativeTransform, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	MainCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+	MainCamera->AddLocalRotation(FRotator(-10, 0, 0));
 
 	MachineGun = CreateDefaultSubobject<UChildActorComponent>(TEXT("MachineGun"));
 	MachineGun->SetChildActorClass(AMachineGun::StaticClass());
+	MachineGun->SetRelativeLocation(FVector(300, 0, 100));
 	MachineGun->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	ActiveWeapon = CreateDefaultSubobject<UChildActorComponent>(TEXT("ActiveWeapon"));
 	ActiveWeapon->SetChildActorClass(AWeapon::StaticClass());
+	ActiveWeapon->SetRelativeLocation(FVector(0, 0, 250));
 	ActiveWeapon->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
@@ -45,8 +54,13 @@ void ABasicVehicle::SetupPlayerInputComponent(class UInputComponent* InputCompon
 	Super::SetupPlayerInputComponent(InputComponent);
 
 	/*Movement Axes*/
-	//InputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
-	//InputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
+	InputComponent->BindAxis("MoveForward", this, &ABasicVehicle::MoveForward);
+	InputComponent->BindAxis("MoveRight", this, &ABasicVehicle::MoveRight);
+
+
+	/*Action Key Mapping*/
+	InputComponent->BindAction("Handbrake", IE_Pressed, this, &ABasicVehicle::HandbrakeOn);
+	InputComponent->BindAction("Handbrake", IE_Released, this, &ABasicVehicle::HandbrakeOff);
 
 	/*Turn Axes Keys*/
 	//InputComponent->BindAxis("LookRight", this, &AMainCharacter::LookRight);
@@ -80,4 +94,36 @@ void ABasicVehicle::SetupPlayerInputComponent(class UInputComponent* InputCompon
 	//InputComponent->BindAction("UINavigationLeft", IE_Pressed, this, &AMainCharacter::UINavigationLeft).bExecuteWhenPaused = true;
 	//InputComponent->BindAction("UINavigationRight", IE_Pressed, this, &AMainCharacter::UINavigationRight).bExecuteWhenPaused = true;
 	//InputComponent->BindAction("UISelectElement", IE_Pressed, this, &AMainCharacter::UISelectElement).bExecuteWhenPaused = true;
+}
+
+void ABasicVehicle::MoveForward(float value)
+{
+	if ((Controller != NULL) && (value != 0.0f))
+	{
+		VehicleMovement->SetThrottleInput(value);
+	}
+}
+
+void ABasicVehicle::MoveRight(float value)
+{
+	if ((Controller != NULL) && (value != 0.0f))
+	{
+		VehicleMovement->SetSteeringInput(value);
+	}
+}
+
+void ABasicVehicle::HandbrakeOn()
+{
+	if ((Controller != NULL))
+	{
+		VehicleMovement->SetHandbrakeInput(true);
+	}
+}
+
+void ABasicVehicle::HandbrakeOff()
+{
+	if ((Controller != NULL))
+	{
+		VehicleMovement->SetHandbrakeInput(false);
+	}
 }

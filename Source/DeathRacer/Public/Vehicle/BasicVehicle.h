@@ -45,5 +45,14 @@ public:
 
 #pragma endregion
 
+#pragma region InputCallbacks
+
+	/** Called for forwards/backward input */
+	void MoveForward(float value);
+	void MoveRight(float value);
+	void HandbrakeOn();
+	void HandbrakeOff();
+
+#pragma endregion
 
 };
