@@ -7,9 +7,6 @@
 
 ABasicVehicle::ABasicVehicle()
 {
-	ConstructorHelpers::FObjectFinder<USkeletalMesh> skMesh(TEXT("SkeletalMesh'/Game/Vehicles/Buggy/Mesh/SK_Buggy_Vehicle.SK_Buggy_Vehicle'"));
-	GetMesh()->SetSkeletalMesh(skMesh.Object);
-
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	SpringArm->SetRelativeLocation(FVector(0,0,250));
@@ -35,12 +32,6 @@ ABasicVehicle::ABasicVehicle()
 void ABasicVehicle::BeginPlay()
 {
 	Super::BeginPlay();
-
-	AMachineGun* MachineGunActor = Cast<AMachineGun>(MachineGun->GetChildActor());
-	if (MachineGunActor)
-	{
-		MachineGunActor->PerformFireWeapon();
-	}
 }
 
 void ABasicVehicle::Tick(float DeltaTime)
@@ -60,6 +51,9 @@ void ABasicVehicle::SetupPlayerInputComponent(class UInputComponent* InputCompon
 	/*Action Key Mapping*/
 	InputComponent->BindAction("Handbrake", IE_Pressed, this, &ABasicVehicle::HandbrakeOn);
 	InputComponent->BindAction("Handbrake", IE_Released, this, &ABasicVehicle::HandbrakeOff);
+
+	InputComponent->BindAction("ApplyTurbo", IE_Pressed, this, &ABasicVehicle::ApplyTurbo);
+	InputComponent->BindAction("FireMachineGun", IE_Pressed, this, &ABasicVehicle::FireMachineGun);
 
 	/*Turn Axes Keys*/
 	//InputComponent->BindAxis("LookRight", this, &AMainCharacter::LookRight);
@@ -97,32 +91,34 @@ void ABasicVehicle::SetupPlayerInputComponent(class UInputComponent* InputCompon
 
 void ABasicVehicle::MoveForward(float value)
 {
-	if ((Controller != NULL) && (value != 0.0f))
-	{
-		GetVehicleMovement()->SetThrottleInput(value);
-	}
+	GetVehicleMovement()->SetThrottleInput(value);
 }
 
 void ABasicVehicle::MoveRight(float value)
 {
-	if ((Controller != NULL) && (value != 0.0f))
-	{
-		GetVehicleMovement()->SetSteeringInput(value);
-	}
+	GetVehicleMovement()->SetSteeringInput(value);
 }
 
 void ABasicVehicle::HandbrakeOn()
 {
-	if ((Controller != NULL))
-	{
-		GetVehicleMovement()->SetHandbrakeInput(true);
-	}
+	GetVehicleMovement()->SetHandbrakeInput(true);
 }
 
 void ABasicVehicle::HandbrakeOff()
 {
-	if ((Controller != NULL))
+	GetVehicleMovement()->SetHandbrakeInput(false);
+}
+
+void ABasicVehicle::ApplyTurbo()
+{
+	//apply turbo
+}
+
+void ABasicVehicle::FireMachineGun()
+{
+	AMachineGun* MachineGunActor = Cast<AMachineGun>(MachineGun->GetChildActor());
+	if (MachineGunActor)
 	{
-		GetVehicleMovement()->SetHandbrakeInput(false);
+		MachineGunActor->PerformFireWeapon();
 	}
 }

@@ -52,6 +52,8 @@ public:
 	void MoveRight(float value);
 	void HandbrakeOn();
 	void HandbrakeOff();
+	void ApplyTurbo();
+	void FireMachineGun();
 
 #pragma endregion
 

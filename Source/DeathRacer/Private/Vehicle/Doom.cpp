@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DeathRacer.h"
+#include "MachineGun.h"
 #include "Wheel/DoomFrontWheel.h"
 #include "Wheel/DoomBackWheel.h"
 #include "Doom.h"
@@ -8,11 +9,11 @@
 ADoom::ADoom()
 {
 	//Set mesh
-	ConstructorHelpers::FObjectFinder<USkeletalMesh> skMesh(TEXT("SkeletalMesh'/Game/Vehicles/Buggy/Mesh/SK_Buggy_Vehicle.SK_Buggy_Vehicle'"));
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> skMesh(TEXT("SkeletalMesh'/Game/Vehicles/Doom/Mesh/SK_Buggy_Vehicle.SK_Buggy_Vehicle'"));
 	GetMesh()->SetSkeletalMesh(skMesh.Object);
 
 	//Set animation blueprint class
-	ConstructorHelpers::FClassFinder<UObject> doomAnimationClass(TEXT("/Game/Vehicles/Buggy/Blueprints/BP_VehicleAnimation"));
+	ConstructorHelpers::FClassFinder<UObject> doomAnimationClass(TEXT("/Game/Vehicles/Doom/Blueprints/BP_VehicleAnimation"));
 	GetMesh()->SetAnimInstanceClass(doomAnimationClass.Class);
 
 	//Set wheels
@@ -30,6 +31,7 @@ ADoom::ADoom()
 void ADoom::BeginPlay()
 {
 	Super::BeginPlay();
+	
 }
 
 void ADoom::Tick(float DeltaTime)
