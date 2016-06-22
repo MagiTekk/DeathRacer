@@ -12,6 +12,8 @@ UCLASS()
 class DEATHRACER_API ADeathRacerGameMode : public AGameMode
 {
 	GENERATED_BODY()
+
+	ADeathRacerGameMode();
 	
 	class AActor* ChoosePlayerStart_Implementation(AController* Player) override; 
 	

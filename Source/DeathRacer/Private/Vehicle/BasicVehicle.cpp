@@ -7,9 +7,8 @@
 
 ABasicVehicle::ABasicVehicle()
 {
-
-	//Mesh->SetSkeletalMesh()
-
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> skMesh(TEXT("SkeletalMesh'/Game/Vehicles/Buggy/Mesh/SK_Buggy_Vehicle.SK_Buggy_Vehicle'"));
+	GetMesh()->SetSkeletalMesh(skMesh.Object);
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
@@ -100,7 +99,7 @@ void ABasicVehicle::MoveForward(float value)
 {
 	if ((Controller != NULL) && (value != 0.0f))
 	{
-		VehicleMovement->SetThrottleInput(value);
+		GetVehicleMovement()->SetThrottleInput(value);
 	}
 }
 
@@ -108,7 +107,7 @@ void ABasicVehicle::MoveRight(float value)
 {
 	if ((Controller != NULL) && (value != 0.0f))
 	{
-		VehicleMovement->SetSteeringInput(value);
+		GetVehicleMovement()->SetSteeringInput(value);
 	}
 }
 
@@ -116,7 +115,7 @@ void ABasicVehicle::HandbrakeOn()
 {
 	if ((Controller != NULL))
 	{
-		VehicleMovement->SetHandbrakeInput(true);
+		GetVehicleMovement()->SetHandbrakeInput(true);
 	}
 }
 
@@ -124,6 +123,6 @@ void ABasicVehicle::HandbrakeOff()
 {
 	if ((Controller != NULL))
 	{
-		VehicleMovement->SetHandbrakeInput(false);
+		GetVehicleMovement()->SetHandbrakeInput(false);
 	}
 }
