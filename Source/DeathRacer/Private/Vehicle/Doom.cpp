@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DeathRacer.h"
+#include "Wheel/DoomFrontWheel.h"
+#include "Wheel/DoomBackWheel.h"
 #include "Doom.h"
-
 
 ADoom::ADoom()
 {
@@ -15,17 +16,14 @@ ADoom::ADoom()
 	GetMesh()->SetAnimInstanceClass(doomAnimationClass.Class);
 
 	//Set wheels
-	ConstructorHelpers::FObjectFinder<UClass> frontWheel(TEXT("Blueprint'/Game/Vehicles/Buggy/Blueprints/BP_FrontWheel.BP_FrontWheel_C'"));
-	ConstructorHelpers::FObjectFinder<UClass> backWheel(TEXT("Blueprint'/Game/Vehicles/Buggy/Blueprints/BP_BackWheel.BP_BackWheel_C'"));
-
 	GetVehicleMovement()->WheelSetups.SetNum(4); //set number of wheels
-	GetVehicleMovement()->WheelSetups[0].WheelClass = frontWheel.Object;
+	GetVehicleMovement()->WheelSetups[0].WheelClass = UDoomFrontWheel::StaticClass();
 	GetVehicleMovement()->WheelSetups[0].BoneName = FName("F_L_wheelJNT");
-	GetVehicleMovement()->WheelSetups[1].WheelClass = frontWheel.Object;
+	GetVehicleMovement()->WheelSetups[1].WheelClass = UDoomFrontWheel::StaticClass();
 	GetVehicleMovement()->WheelSetups[1].BoneName = FName("F_R_wheelJNT");
-	GetVehicleMovement()->WheelSetups[2].WheelClass = backWheel.Object;
+	GetVehicleMovement()->WheelSetups[2].WheelClass = UDoomBackWheel::StaticClass();
 	GetVehicleMovement()->WheelSetups[2].BoneName = FName("B_L_wheelJNT");
-	GetVehicleMovement()->WheelSetups[3].WheelClass = backWheel.Object;
+	GetVehicleMovement()->WheelSetups[3].WheelClass = UDoomBackWheel::StaticClass();
 	GetVehicleMovement()->WheelSetups[3].BoneName = FName("B_R_wheelJNT");
 }
 
