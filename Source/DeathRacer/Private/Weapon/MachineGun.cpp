@@ -7,12 +7,20 @@
 
 AMachineGun::AMachineGun()
 {
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = true;
+	//PrimaryActorTick.bAllowTickOnDedicatedServer = true;
+
 	//WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MachineGunMesh"));
 	//WeaponMesh->SetStaticMesh();
 }
 
 void AMachineGun::BeginPlay()
 {
+	Super::BeginPlay();
+	SetActorTickEnabled(true);
+	isActive = false;
+
 	UNormalGunBehavior* GunBehavior = NewObject<UNormalGunBehavior>(this, UNormalGunBehavior::StaticClass());
 	GunBehavior->SourceActor = this;
 	Super::SetWeaponBehavior(GunBehavior);
@@ -21,7 +29,19 @@ void AMachineGun::BeginPlay()
 // Called every frame
 void AMachineGun::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
-
+	Super::Tick(DeltaTime); //does not fire
+	if (isActive)
+	{
+		PerformFireWeapon();
+	}
 }
 
+void AMachineGun::EnableWeapon()
+{
+	isActive = true;
+}
+
+void AMachineGun::DisableWeapon()
+{
+	isActive = false;
+}

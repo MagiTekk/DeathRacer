@@ -7,6 +7,8 @@
 
 ABasicVehicle::ABasicVehicle()
 {
+	PrimaryActorTick.bCanEverTick = true;
+
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	SpringArm->SetRelativeLocation(FVector(0,0,250));
@@ -53,7 +55,9 @@ void ABasicVehicle::SetupPlayerInputComponent(class UInputComponent* InputCompon
 	InputComponent->BindAction("Handbrake", IE_Released, this, &ABasicVehicle::HandbrakeOff);
 
 	InputComponent->BindAction("ApplyTurbo", IE_Pressed, this, &ABasicVehicle::ApplyTurbo);
+
 	InputComponent->BindAction("FireMachineGun", IE_Pressed, this, &ABasicVehicle::FireMachineGun);
+	InputComponent->BindAction("FireMachineGun", IE_Released, this, &ABasicVehicle::CeaseMachineGunFire);
 
 	/*Turn Axes Keys*/
 	//InputComponent->BindAxis("LookRight", this, &AMainCharacter::LookRight);
@@ -119,6 +123,15 @@ void ABasicVehicle::FireMachineGun()
 	AMachineGun* MachineGunActor = Cast<AMachineGun>(MachineGun->GetChildActor());
 	if (MachineGunActor)
 	{
-		MachineGunActor->PerformFireWeapon();
+		MachineGunActor->EnableWeapon();
+	}
+}
+
+void ABasicVehicle::CeaseMachineGunFire()
+{
+	AMachineGun* MachineGunActor = Cast<AMachineGun>(MachineGun->GetChildActor());
+	if (MachineGunActor)
+	{
+		MachineGunActor->DisableWeapon();
 	}
 }

@@ -8,7 +8,7 @@
 
 ADoom::ADoom()
 {
-	//Set mesh
+	//Set Mesh
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> skMesh(TEXT("SkeletalMesh'/Game/Vehicles/Doom/Mesh/SK_Buggy_Vehicle.SK_Buggy_Vehicle'"));
 	GetMesh()->SetSkeletalMesh(skMesh.Object);
 
@@ -16,7 +16,7 @@ ADoom::ADoom()
 	ConstructorHelpers::FClassFinder<UObject> doomAnimationClass(TEXT("/Game/Vehicles/Doom/Blueprints/BP_VehicleAnimation"));
 	GetMesh()->SetAnimInstanceClass(doomAnimationClass.Class);
 
-	//Set wheels
+	//Set Wheels
 	GetVehicleMovement()->WheelSetups.SetNum(4); //set number of wheels
 	GetVehicleMovement()->WheelSetups[0].WheelClass = UDoomFrontWheel::StaticClass();
 	GetVehicleMovement()->WheelSetups[0].BoneName = FName("F_L_wheelJNT");

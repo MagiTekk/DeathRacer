@@ -22,4 +22,20 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
+
+#pragma region Variables
+public:
+
+	//as long as the user presses the button, the weapon fires
+	bool isActive;
+
+#pragma endregion
+
+#pragma region Functions
+public:
+
+	void EnableWeapon();
+	void DisableWeapon();
+
+#pragma endregion
 };

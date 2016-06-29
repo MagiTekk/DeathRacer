@@ -12,4 +12,19 @@ public:
 	UNormalGunBehavior();
 
 	virtual void FireWeapon() override;
+
+#pragma region Variables
+public:
+
+	//-1 spawns bullet in the left slot, +1 spawns it in the right slot
+	int32 spawnPosition;
+
+#pragma endregion
+
+#pragma region Components
+public:
+
+	UClass* InitialParticleEffect;
+
+#pragma endregion
 };

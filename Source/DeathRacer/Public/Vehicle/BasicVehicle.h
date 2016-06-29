@@ -27,6 +27,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 #pragma region Components
+public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 		class USpringArmComponent* SpringArm;
@@ -46,6 +47,7 @@ public:
 #pragma endregion
 
 #pragma region InputCallbacks
+public:
 
 	/** Called for forwards/backward input */
 	void MoveForward(float value);
@@ -54,6 +56,7 @@ public:
 	void HandbrakeOff();
 	void ApplyTurbo();
 	void FireMachineGun();
+	void CeaseMachineGunFire();
 
 #pragma endregion
 

@@ -22,6 +22,7 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 #pragma region Variables
+public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
 		int32 Damage;
@@ -29,6 +30,7 @@ public:
 #pragma endregion
 
 #pragma region Components
+public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
 		UStaticMeshComponent* MissileMesh;
