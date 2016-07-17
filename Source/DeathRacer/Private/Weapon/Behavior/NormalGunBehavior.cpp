@@ -22,7 +22,7 @@ void UNormalGunBehavior::FireWeapon()
 
 	//spawn the bullet on the sides of the actor
 	FVector WorldActorLocation = SourceActor->GetActorLocation();
-	FVector SpawnPosition = WorldActorLocation + FVector(BoundsExtent.Y  *  spawnPosition, 0.0f, 0.0f);
+	FVector SpawnPosition = WorldActorLocation + FVector( 0.0f, (BoundsExtent.Y + 0.0f)  *  spawnPosition, 0.0f);
 
 	UE_LOG(LogTemp, Warning, TEXT("ACTOR LOCATION: X: %d, Y: %d, Z: %d"), WorldActorLocation.X, WorldActorLocation.Y, WorldActorLocation.Z);
 

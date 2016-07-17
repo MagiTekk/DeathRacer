@@ -13,14 +13,14 @@ ABullet::ABullet()
 	ConstructorHelpers::FObjectFinder<UStaticMesh> bulletMesh(TEXT("StaticMesh'/Game/Mesh/Bullet/BulletMesh.BulletMesh'"));
 	BulletMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BulletMesh"));
 	BulletMesh->SetStaticMesh(bulletMesh.Object);
-	BulletMesh->SetRelativeScale3D(FVector(0.15f, 0.15f, 0.15f));
+	BulletMesh->SetRelativeScale3D(FVector(0.2f, 0.2f, 0.2f));
 	BulletMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	BulletMesh->SetCollisionProfileName(TEXT("OverlapAll"));
 	BulletMesh->bGenerateOverlapEvents = true;
 	RootComponent = BulletMesh;
 
 	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionSphere"));
-	CollisionSphere->SetSphereRadius(100.0f);
+	CollisionSphere->SetSphereRadius(150.0f);
 	CollisionSphere->SetRelativeLocation(FVector(0.0f, 0.0f, 50.0f));
 	// Collision profiles are defined in DefaultEngine.ini
 	CollisionSphere->SetCollisionProfileName("Projectile");
@@ -30,10 +30,11 @@ ABullet::ABullet()
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 	//ProjectileMovement->UpdatedComponent = BulletMesh; //which component to affect the movement, by default the root component
-	ProjectileMovement->InitialSpeed = 3000.f;
-	ProjectileMovement->MaxSpeed = 3000.f;
+	ProjectileMovement->InitialSpeed = 5000.f;
+	ProjectileMovement->MaxSpeed = 5000.f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = false;
+	ProjectileMovement->ProjectileGravityScale = 0.0f;
 
 	//Die after 5 seconds by default
 	InitialLifeSpan = 5.0f;
@@ -58,7 +59,8 @@ void ABullet::OnOverlap(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
 	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-		Destroy();
+		//TODO nullbot: avoid contact with our owner's physics
+		//OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
+		//Destroy();
 	}
 }
