@@ -2,6 +2,7 @@
 
 #include "DeathRacer.h"
 #include "MachineGun.h"
+#include "WeaponBehavior.h"
 #include "BasicVehicle.h"
 
 
@@ -22,14 +23,16 @@ ABasicVehicle::ABasicVehicle()
 
 	MachineGun = CreateDefaultSubobject<UChildActorComponent>(TEXT("MachineGun"));
 	MachineGun->SetChildActorClass(AMachineGun::StaticClass());
-	MachineGun->SetRelativeLocation(FVector(300, 0, 100));
+	//MachineGun->SetRelativeLocation(FVector(300, 0, 100));
 	MachineGun->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	ActiveWeapon = CreateDefaultSubobject<UChildActorComponent>(TEXT("ActiveWeapon"));
 	ActiveWeapon->SetChildActorClass(AWeapon::StaticClass());
-	ActiveWeapon->SetRelativeLocation(FVector(0, 0, 250));
+	//ActiveWeapon->SetRelativeLocation(FVector(0, 0, 250));
 	ActiveWeapon->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
+
+
 
 void ABasicVehicle::BeginPlay()
 {

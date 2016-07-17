@@ -33,16 +33,27 @@ public:
 public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
+		UArrowComponent* ArrowComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
 		UStaticMeshComponent* BulletMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
-		UCapsuleComponent* CollisionCapsule;
+		USphereComponent* CollisionSphere;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
 		UProjectileMovementComponent* ProjectileMovement;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Material")
 		UMaterialInstanceDynamic* DynamicInstance;
+
+#pragma endregion
+
+#pragma region Methods
+public:
+
+	UFUNCTION()
+		void OnOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 
 #pragma endregion
 

@@ -8,10 +8,13 @@ ABulletSpawnEffect::ABulletSpawnEffect()
 
 	ParticleEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleEffect"));
 	//ParticleEffect->SetRelativeScale3D(FVector(3.0f, 3.0f, 3.0f));
-	ParticleEffect->AttachTo(RootComponent);
+	RootComponent = ParticleEffect;
 
 	ConstructorHelpers::FObjectFinder<USoundCue> bulletSpawnSound(TEXT("SoundCue'/Game/Audio/SoundCues/MachineGunShotSound_Cue.MachineGunShotSound_Cue'"));
 	SoundCueEffect = bulletSpawnSound.Object;
+
+	//Die after 2 seconds
+	InitialLifeSpan = 2.0f;
 }
 
 // Called when the game starts

@@ -21,8 +21,8 @@ void UNormalGunBehavior::FireWeapon()
 	SourceActor->GetActorBounds(false, Origin, BoundsExtent);
 
 	//spawn the bullet on the sides of the actor
-	FVector WorldActorLocation = SourceActor->GetActorLocation();// find a way to get global location of this component
-	FVector SpawnPosition = WorldActorLocation + FVector(BoundsExtent.X  *  spawnPosition, 0.0f, 0.0f);
+	FVector WorldActorLocation = SourceActor->GetActorLocation();
+	FVector SpawnPosition = WorldActorLocation + FVector(BoundsExtent.Y  *  spawnPosition, 0.0f, 0.0f);
 
 	UE_LOG(LogTemp, Warning, TEXT("ACTOR LOCATION: X: %d, Y: %d, Z: %d"), WorldActorLocation.X, WorldActorLocation.Y, WorldActorLocation.Z);
 

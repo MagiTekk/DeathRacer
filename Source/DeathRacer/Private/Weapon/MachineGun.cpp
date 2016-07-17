@@ -11,8 +11,12 @@ AMachineGun::AMachineGun()
 	PrimaryActorTick.bStartWithTickEnabled = true;
 	//PrimaryActorTick.bAllowTickOnDedicatedServer = true;
 
-	//WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MachineGunMesh"));
-	//WeaponMesh->SetStaticMesh();
+	ConstructorHelpers::FObjectFinder<UStaticMesh> machineGunmesh(TEXT("StaticMesh'/Game/Mesh/MachineGun/MachineGunMesh.MachineGunMesh'"));
+	WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MachineGunMesh"));
+	WeaponMesh->SetStaticMesh( machineGunmesh.Object );
+	WeaponMesh->SetCollisionProfileName(TEXT("OverlapAll"));
+	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	RootComponent = WeaponMesh;
 }
 
 void AMachineGun::BeginPlay()
