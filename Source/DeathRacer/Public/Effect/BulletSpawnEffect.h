@@ -39,4 +39,12 @@ public:
 
 #pragma endregion
 
+#pragma region Methods
+public:
+
+	UFUNCTION()
+		void ActivateEffect();
+
+#pragma endregion
+
 };

@@ -23,6 +23,16 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
+		UStaticMeshComponent* LeftGun;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
+		UStaticMeshComponent* RightGun;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
+		UChildActorComponent* BulletSpawnEffect;
+
+
 #pragma region Variables
 public:
 

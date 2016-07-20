@@ -2,6 +2,7 @@
 
 #include "DeathRacer.h"
 #include "NormalGunBehavior.h"
+#include "BulletSpawnEffect.h"
 #include "MachineGun.h"
 
 
@@ -17,6 +18,28 @@ AMachineGun::AMachineGun()
 	WeaponMesh->SetCollisionProfileName(TEXT("OverlapAll"));
 	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	RootComponent = WeaponMesh;
+
+	ConstructorHelpers::FObjectFinder<UStaticMesh> leftGunmesh(TEXT("StaticMesh'/Game/Mesh/MachineGun/MachineGunMesh.MachineGunMesh'"));
+	LeftGun = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LeftGun"));
+	LeftGun->SetStaticMesh(leftGunmesh.Object);
+	LeftGun->SetRelativeScale3D(FVector(4.0f, 0.1f, 1.0f));
+	LeftGun->SetRelativeLocation(FVector(150.0f, -55.0f, 0.0f));
+	LeftGun->SetCollisionProfileName(TEXT("OverlapAll"));
+	LeftGun->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	LeftGun->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	ConstructorHelpers::FObjectFinder<UStaticMesh> rightGunmesh(TEXT("StaticMesh'/Game/Mesh/MachineGun/MachineGunMesh.MachineGunMesh'"));
+	RightGun = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RightGun"));
+	RightGun->SetStaticMesh(rightGunmesh.Object);
+	RightGun->SetRelativeScale3D(FVector(4.0f, 0.1f, 1.0f));
+	RightGun->SetRelativeLocation(FVector(150.0f, 55.0f, 0.0f));
+	RightGun->SetCollisionProfileName(TEXT("OverlapAll"));
+	RightGun->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	RightGun->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	BulletSpawnEffect = CreateDefaultSubobject<UChildActorComponent>(TEXT("BulletSpawnEffect"));
+	BulletSpawnEffect->SetChildActorClass(ABulletSpawnEffect::StaticClass());
+	BulletSpawnEffect->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void AMachineGun::BeginPlay()

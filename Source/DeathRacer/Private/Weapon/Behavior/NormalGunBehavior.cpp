@@ -1,6 +1,7 @@
 #include "DeathRacer.h"
 #include "Bullet.h"
-#include "BulletSpawnEffect.h"
+#include "../../Public/Effect/BulletSpawnEffect.h"
+#include "MachineGun.h"
 #include "NormalGunBehavior.h"
 
 
@@ -20,17 +21,27 @@ void UNormalGunBehavior::FireWeapon()
 	FVector BoundsExtent;
 	SourceActor->GetActorBounds(false, Origin, BoundsExtent);
 
-	//spawn the bullet on the sides of the actor
-	FVector WorldActorLocation = SourceActor->GetActorLocation();
-	FVector SpawnPosition = WorldActorLocation + FVector( 0.0f, (BoundsExtent.Y + 0.0f)  *  spawnPosition, 0.0f);
 
-	UE_LOG(LogTemp, Warning, TEXT("ACTOR LOCATION: X: %d, Y: %d, Z: %d"), WorldActorLocation.X, WorldActorLocation.Y, WorldActorLocation.Z);
+	AMachineGun* MachineGunActor = Cast<AMachineGun>(SourceActor);
+	FVector leftGunLocation = MachineGunActor->LeftGun->GetComponentLocation();
+	FVector rightGunLocation = MachineGunActor->RightGun->GetComponentLocation();
+
+	//spawn the bullet on the sides of the actor
+	//FVector WorldActorLocation = SourceActor->GetActorLocation();
+	//FVector SpawnPosition = WorldActorLocation + FVector( 0.0f, (BoundsExtent.Y + 0.0f)  *  spawnPosition, 0.0f);
+
+	FVector SpawnPosition = spawnPosition > 0 ? rightGunLocation : leftGunLocation;
+
+	//UE_LOG(LogTemp, Warning, TEXT("ACTOR LOCATION: X: %d, Y: %d, Z: %d"), WorldActorLocation.X, WorldActorLocation.Y, WorldActorLocation.Z);
 
 	// spawn bullet
 	SourceActor->GetWorld()->SpawnActor<ABullet>(ABullet::StaticClass(), SpawnPosition, SourceActor->GetActorRotation());
 
 	//gunshot effect
-	SourceActor->GetWorld()->SpawnActor<ABulletSpawnEffect>(ABulletSpawnEffect::StaticClass(), SpawnPosition, SourceActor->GetActorRotation());
+	//SourceActor->GetWorld()->SpawnActor<ABulletSpawnEffect>(ABulletSpawnEffect::StaticClass(), SpawnPosition, SourceActor->GetActorRotation());
+	ABulletSpawnEffect* BulletSpawnEffect = Cast<ABulletSpawnEffect>(MachineGunActor->BulletSpawnEffect->GetChildActor());
+	BulletSpawnEffect->SetActorLocation(SpawnPosition);
+	BulletSpawnEffect->ActivateEffect();
 
 	//move position of for the next bullet
 	spawnPosition *= -1;
