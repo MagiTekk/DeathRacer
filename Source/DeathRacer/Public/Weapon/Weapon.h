@@ -32,5 +32,11 @@ public:
 
 	UFUNCTION(Category = "Behavior")
 		virtual void SetWeaponBehavior(UWeaponBehavior* NewWeaponBehavior);
+
+#pragma region Methods
+public:
+	virtual void Destroyed() override;
+
+#pragma endregion
 	
 };

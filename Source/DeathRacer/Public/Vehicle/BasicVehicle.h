@@ -13,11 +13,6 @@ class DEATHRACER_API ABasicVehicle : public AWheeledVehicle
 {
 	GENERATED_BODY()
 
-private:
-
-	bool bTimerRunning = false;
-	bool bIsMachineGunEnabled = false;
-
 public:
 
 	ABasicVehicle();
@@ -51,15 +46,6 @@ public:
 
 #pragma endregion
 
-#pragma region Methods
-private:
-	void TimerCallback();
-
-public:
-	virtual void Destroyed() override;
-
-#pragma endregion
-
 #pragma region InputCallbacks
 public:
 
@@ -69,18 +55,8 @@ public:
 	void HandbrakeOn();
 	void HandbrakeOff();
 	void ApplyTurbo();
-	void EnableMachineGun();
-	void DisableMachineGun();
 	void FireMachineGun();
 	void CeaseMachineGunFire();
-
-#pragma endregion
-
-#pragma region Timer
-public:
-
-	/* Handle to manage the timer */
-	FTimerHandle TimerHandle;
 
 #pragma endregion
 

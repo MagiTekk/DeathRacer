@@ -12,6 +12,10 @@ UCLASS()
 class DEATHRACER_API AMachineGun : public AWeapon
 {
 	GENERATED_BODY()
+
+private:
+
+	bool bTimerRunning = false;
 	
 public:
 
@@ -41,11 +45,23 @@ public:
 
 #pragma endregion
 
-#pragma region Functions
+#pragma region Methods
+
+private:
+	void TimerCallback();
+
+public:
+	virtual void Destroyed() override;
+	void FireWeapon();
+	void CeaseFire();
+
+#pragma endregion
+
+#pragma region Timer
 public:
 
-	void EnableWeapon();
-	void DisableWeapon();
+	/* Handle to manage the timer */
+	FTimerHandle TimerHandle;
 
 #pragma endregion
 };

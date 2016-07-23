@@ -38,3 +38,8 @@ void AWeapon::SetWeaponBehavior(UWeaponBehavior* NewWeaponBehavior)
 	WeaponBehavior = NewWeaponBehavior;
 }
 
+void AWeapon::Destroyed()
+{
+	Super::Destroyed();
+}
+

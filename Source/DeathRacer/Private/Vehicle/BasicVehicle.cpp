@@ -32,8 +32,6 @@ ABasicVehicle::ABasicVehicle()
 	ActiveWeapon->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
-
-
 void ABasicVehicle::BeginPlay()
 {
 	Super::BeginPlay();
@@ -42,13 +40,6 @@ void ABasicVehicle::BeginPlay()
 void ABasicVehicle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (bIsMachineGunEnabled && !bTimerRunning)
-	{
-		bTimerRunning = true;
-		FireMachineGun();
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ABasicVehicle::TimerCallback, 0.2f, false);
-	}
 }
 
 void ABasicVehicle::SetupPlayerInputComponent(class UInputComponent* InputComponent)
@@ -66,8 +57,8 @@ void ABasicVehicle::SetupPlayerInputComponent(class UInputComponent* InputCompon
 
 	InputComponent->BindAction("ApplyTurbo", IE_Pressed, this, &ABasicVehicle::ApplyTurbo);
 
-	InputComponent->BindAction("FireMachineGun", IE_Pressed, this, &ABasicVehicle::EnableMachineGun);
-	InputComponent->BindAction("FireMachineGun", IE_Released, this, &ABasicVehicle::DisableMachineGun);
+	InputComponent->BindAction("FireMachineGun", IE_Pressed, this, &ABasicVehicle::FireMachineGun);
+	InputComponent->BindAction("FireMachineGun", IE_Released, this, &ABasicVehicle::CeaseMachineGunFire);
 
 	/*Turn Axes Keys*/
 	//InputComponent->BindAxis("LookRight", this, &AMainCharacter::LookRight);
@@ -128,25 +119,12 @@ void ABasicVehicle::ApplyTurbo()
 	//apply turbo
 }
 
-void ABasicVehicle::EnableMachineGun()
-{
-	if (!bTimerRunning)
-	{
-		bIsMachineGunEnabled = true;
-	}
-}
-
-void ABasicVehicle::DisableMachineGun()
-{
-	bIsMachineGunEnabled = false;
-}
-
 void ABasicVehicle::FireMachineGun()
 {
 	AMachineGun* MachineGunActor = Cast<AMachineGun>(MachineGun->GetChildActor());
 	if (MachineGunActor)
 	{
-		MachineGunActor->PerformFireWeapon();
+		MachineGunActor->FireWeapon();
 	}
 }
 
@@ -155,16 +133,6 @@ void ABasicVehicle::CeaseMachineGunFire()
 	AMachineGun* MachineGunActor = Cast<AMachineGun>(MachineGun->GetChildActor());
 	if (MachineGunActor)
 	{
-		MachineGunActor->DisableWeapon();
+		MachineGunActor->CeaseFire();
 	}
-}
-
-void ABasicVehicle::TimerCallback()
-{
-	bTimerRunning = false;
-}
-
-void ABasicVehicle::Destroyed()
-{
-	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 }

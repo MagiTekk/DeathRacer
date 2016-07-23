@@ -57,18 +57,31 @@ void AMachineGun::BeginPlay()
 void AMachineGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime); //does not fire
-	if (isActive)
+	if (isActive && !bTimerRunning)
 	{
+		bTimerRunning = true;
 		PerformFireWeapon();
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMachineGun::TimerCallback, 0.1f, false);
 	}
 }
 
-void AMachineGun::EnableWeapon()
+void AMachineGun::FireWeapon()
 {
 	isActive = true;
 }
 
-void AMachineGun::DisableWeapon()
+void AMachineGun::CeaseFire()
 {
 	isActive = false;
+}
+
+void AMachineGun::TimerCallback()
+{
+	bTimerRunning = false;
+}
+
+void AMachineGun::Destroyed()
+{
+	Super::Destroyed();
+	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 }
