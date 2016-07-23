@@ -23,18 +23,20 @@ ABasicVehicle::ABasicVehicle()
 
 	MachineGun = CreateDefaultSubobject<UChildActorComponent>(TEXT("MachineGun"));
 	MachineGun->SetChildActorClass(AMachineGun::StaticClass());
-	//MachineGun->SetRelativeLocation(FVector(300, 0, 100));
 	MachineGun->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	ActiveWeapon = CreateDefaultSubobject<UChildActorComponent>(TEXT("ActiveWeapon"));
 	ActiveWeapon->SetChildActorClass(AWeapon::StaticClass());
-	//ActiveWeapon->SetRelativeLocation(FVector(0, 0, 250));
 	ActiveWeapon->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void ABasicVehicle::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//set machine gun's owner
+	AMachineGun* MachineGunActor = Cast<AMachineGun>(MachineGun->GetChildActor());
+	MachineGunActor->SetOwner(this);
 }
 
 void ABasicVehicle::Tick(float DeltaTime)
@@ -135,4 +137,22 @@ void ABasicVehicle::CeaseMachineGunFire()
 	{
 		MachineGunActor->CeaseFire();
 	}
+}
+
+void ABasicVehicle::ApplyDamage(float value)
+{
+	_health = _health - (value / armorValue);
+
+	if (_health <= 0)
+	{
+		Die();
+	}
+}
+
+void ABasicVehicle::Die()
+{
+	//GEngine->AddOnScreenDebugMessage(-1, 2.0, FColor::Yellow, FString::FString("I DIED!!: %s")); //_driverName.ToString()
+	//GEngine->AddOnScreenDebugMessage(-1, 2.0, FColor::Red, FString::Printf(TEXT("Some variable values: x: %f, y: %f"), x, y));
+
+	GEngine->AddOnScreenDebugMessage(-1, 2.0, FColor::Yellow, FString::Printf(TEXT("I DIED!!: %s"), *_driverName.ToString()));
 }

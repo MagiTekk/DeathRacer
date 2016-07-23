@@ -26,6 +26,18 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
+#pragma region variables
+private:
+	float _health = 100;
+	FName _driverName = TEXT("noName");
+
+public:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Variable")
+		float armorValue; //1 - 10
+
+#pragma endregion
+
 #pragma region Components
 public:
 
@@ -57,6 +69,13 @@ public:
 	void ApplyTurbo();
 	void FireMachineGun();
 	void CeaseMachineGunFire();
+
+#pragma endregion
+
+#pragma region Methods
+public:
+	void ApplyDamage(float value);
+	void Die();
 
 #pragma endregion
 

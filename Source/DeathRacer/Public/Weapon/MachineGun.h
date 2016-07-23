@@ -42,6 +42,7 @@ public:
 
 	//as long as the user presses the button, the weapon fires
 	bool isActive;
+	float damageValue;
 
 #pragma endregion
 

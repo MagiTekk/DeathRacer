@@ -30,8 +30,8 @@ ABullet::ABullet()
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 	//ProjectileMovement->UpdatedComponent = BulletMesh; //which component to affect the movement, by default the root component
-	ProjectileMovement->InitialSpeed = 5000.f;
-	ProjectileMovement->MaxSpeed = 5000.f;
+	ProjectileMovement->InitialSpeed = 8000.f;
+	ProjectileMovement->MaxSpeed = 8000.f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = false;
 	ProjectileMovement->ProjectileGravityScale = 0.0f;
@@ -56,11 +56,15 @@ void ABullet::Tick(float DeltaTime)
 
 void ABullet::OnOverlap(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	// Only add impulse and destroy projectile if we hit a physics
-	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
+	//Car owner
+	AActor* weaponOwner = this->GetOwner();
+	AActor* vehicleOwner = weaponOwner->GetOwner();
+
+	// Only add impulse and destroy projectile if we hit a physics, but not the owner's physics!
+	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics() && (OtherActor != vehicleOwner))
 	{
-		//TODO nullbot: avoid contact with our owner's physics
-		//OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-		//Destroy();
+		//cast OtherComp to basic vehicle and apply damage!!
+		OtherComp->AddImpulseAtLocation(GetVelocity() * 15.0f, GetActorLocation());
+		Destroy();
 	}
 }

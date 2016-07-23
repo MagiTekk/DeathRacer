@@ -34,8 +34,11 @@ void UNormalGunBehavior::FireWeapon()
 
 	//UE_LOG(LogTemp, Warning, TEXT("ACTOR LOCATION: X: %d, Y: %d, Z: %d"), WorldActorLocation.X, WorldActorLocation.Y, WorldActorLocation.Z);
 
+	FActorSpawnParameters bulletParams = FActorSpawnParameters();
+	bulletParams.Owner = SourceActor;
+
 	// spawn bullet
-	SourceActor->GetWorld()->SpawnActor<ABullet>(ABullet::StaticClass(), SpawnPosition, SourceActor->GetActorRotation());
+	SourceActor->GetWorld()->SpawnActor<ABullet>(ABullet::StaticClass(), SpawnPosition, SourceActor->GetActorRotation(), bulletParams);
 
 	//gunshot effect
 	//SourceActor->GetWorld()->SpawnActor<ABulletSpawnEffect>(ABulletSpawnEffect::StaticClass(), SpawnPosition, SourceActor->GetActorRotation());

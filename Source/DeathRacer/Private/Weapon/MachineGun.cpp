@@ -2,7 +2,7 @@
 
 #include "DeathRacer.h"
 #include "NormalGunBehavior.h"
-#include "BulletSpawnEffect.h"
+#include "../../Public/Effect/BulletSpawnEffect.h"
 #include "MachineGun.h"
 
 
@@ -40,6 +40,9 @@ AMachineGun::AMachineGun()
 	BulletSpawnEffect = CreateDefaultSubobject<UChildActorComponent>(TEXT("BulletSpawnEffect"));
 	BulletSpawnEffect->SetChildActorClass(ABulletSpawnEffect::StaticClass());
 	BulletSpawnEffect->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	//balancing needed!
+	damageValue = 5;
 }
 
 void AMachineGun::BeginPlay()
@@ -56,12 +59,12 @@ void AMachineGun::BeginPlay()
 // Called every frame
 void AMachineGun::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime); //does not fire
+	Super::Tick(DeltaTime);
 	if (isActive && !bTimerRunning)
 	{
 		bTimerRunning = true;
 		PerformFireWeapon();
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMachineGun::TimerCallback, 0.1f, false);
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMachineGun::TimerCallback, 0.05f, false);
 	}
 }
 
