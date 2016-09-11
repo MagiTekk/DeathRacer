@@ -42,7 +42,7 @@ AMachineGun::AMachineGun()
 	BulletSpawnEffect->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	//balancing needed!
-	damageValue = 5;
+	damageValue = 1.0f;
 }
 
 void AMachineGun::BeginPlay()

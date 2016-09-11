@@ -31,7 +31,9 @@ ADoom::ADoom()
 void ADoom::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	//set Doom's armor value
+	armorValue = 2;
 }
 
 void ADoom::Tick(float DeltaTime)

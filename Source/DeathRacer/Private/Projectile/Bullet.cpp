@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DeathRacer.h"
+#include "BasicVehicle.h"
+#include "MachineGun.h"
 #include "Bullet.h"
 
 
@@ -38,13 +40,18 @@ ABullet::ABullet()
 
 	//Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+	Damage = 0;
 }
 
 // Called when the game starts
 void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
-
+	if (GetOwner()->IsA(AMachineGun::StaticClass()))
+	{
+		AMachineGun* machineGunActor = Cast<AMachineGun>(GetOwner());
+		Damage = machineGunActor->damageValue;
+	}
 }
 
 // Called every frame
@@ -57,14 +64,19 @@ void ABullet::Tick(float DeltaTime)
 void ABullet::OnOverlap(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
 	//Car owner
-	AActor* weaponOwner = this->GetOwner();
+	AActor* weaponOwner = GetOwner();
 	AActor* vehicleOwner = weaponOwner->GetOwner();
 
 	// Only add impulse and destroy projectile if we hit a physics, but not the owner's physics!
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics() && (OtherActor != vehicleOwner))
 	{
-		//cast OtherComp to basic vehicle and apply damage!!
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 15.0f, GetActorLocation());
+		//if a car was hit then apply damage
+		if (OtherActor->IsA( ABasicVehicle::StaticClass()))
+		{
+			ABasicVehicle* vehicleHit = Cast<ABasicVehicle>(OtherActor);
+			vehicleHit->ApplyDamage(Damage);
+		}
+		OtherComp->AddImpulseAtLocation(GetVelocity() * 5.0f, GetActorLocation());
 		Destroy();
 	}
 }

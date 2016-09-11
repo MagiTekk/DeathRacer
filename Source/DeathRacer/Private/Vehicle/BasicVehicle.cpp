@@ -3,6 +3,7 @@
 #include "DeathRacer.h"
 #include "MachineGun.h"
 #include "WeaponBehavior.h"
+#include "TotaledCarEffect.h"
 #include "BasicVehicle.h"
 
 
@@ -28,6 +29,10 @@ ABasicVehicle::ABasicVehicle()
 	ActiveWeapon = CreateDefaultSubobject<UChildActorComponent>(TEXT("ActiveWeapon"));
 	ActiveWeapon->SetChildActorClass(AWeapon::StaticClass());
 	ActiveWeapon->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	TotaledCarEffect = CreateDefaultSubobject<UChildActorComponent>(TEXT("TotaledCarEffect"));
+	TotaledCarEffect->SetChildActorClass(ATotaledCarEffect::StaticClass());
+	TotaledCarEffect->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void ABasicVehicle::BeginPlay()
@@ -59,8 +64,8 @@ void ABasicVehicle::SetupPlayerInputComponent(class UInputComponent* InputCompon
 
 	InputComponent->BindAction("ApplyTurbo", IE_Pressed, this, &ABasicVehicle::ApplyTurbo);
 
-	InputComponent->BindAction("FireMachineGun", IE_Pressed, this, &ABasicVehicle::FireMachineGun);
-	InputComponent->BindAction("FireMachineGun", IE_Released, this, &ABasicVehicle::CeaseMachineGunFire);
+	InputComponent->BindAction("FireWeapon", IE_Pressed, this, &ABasicVehicle::FireMachineGun);
+	InputComponent->BindAction("FireWeapon", IE_Released, this, &ABasicVehicle::CeaseMachineGunFire);
 
 	/*Turn Axes Keys*/
 	//InputComponent->BindAxis("LookRight", this, &AMainCharacter::LookRight);
@@ -121,6 +126,8 @@ void ABasicVehicle::ApplyTurbo()
 	//apply turbo
 }
 
+
+//TODO nullBot: change it later to be able to fire the selected weapon
 void ABasicVehicle::FireMachineGun()
 {
 	AMachineGun* MachineGunActor = Cast<AMachineGun>(MachineGun->GetChildActor());
@@ -143,7 +150,7 @@ void ABasicVehicle::ApplyDamage(float value)
 {
 	_health = _health - (value / armorValue);
 
-	if (_health <= 0)
+	if (_health <= 0 && !_isDead)
 	{
 		Die();
 	}
@@ -154,5 +161,15 @@ void ABasicVehicle::Die()
 	//GEngine->AddOnScreenDebugMessage(-1, 2.0, FColor::Yellow, FString::FString("I DIED!!: %s")); //_driverName.ToString()
 	//GEngine->AddOnScreenDebugMessage(-1, 2.0, FColor::Red, FString::Printf(TEXT("Some variable values: x: %f, y: %f"), x, y));
 
-	GEngine->AddOnScreenDebugMessage(-1, 2.0, FColor::Yellow, FString::Printf(TEXT("I DIED!!: %s"), *_driverName.ToString()));
+	GEngine->AddOnScreenDebugMessage(-1, 2.0, FColor::Yellow, FString::Printf(TEXT("I DIED!!: %s"), *driverName.ToString()));
+
+	//activate
+	//TotaledCarEffect->Activate(); ??
+	ATotaledCarEffect* carEffect = Cast<ATotaledCarEffect>(TotaledCarEffect->GetChildActor());
+	if (carEffect)
+	{
+		carEffect->ActivateEffect();
+	}
+
+	_isDead = true;
 }

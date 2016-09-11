@@ -28,17 +28,25 @@ public:
 
 #pragma region variables
 private:
+
 	float _health = 100;
-	FName _driverName = TEXT("noName");
+	bool _isDead = false;
 
 public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Variable")
-		float armorValue; //1 - 10
+		int32 armorValue = 1;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Variable")
+		FName driverName = TEXT("noName");
 
 #pragma endregion
 
 #pragma region Components
+private:
+
+	UParticleSystem* TotaledCarParticleReference;
+
 public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
@@ -55,6 +63,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
 		TArray<class AWeapon*> WeaponArray;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Particle")
+		UChildActorComponent* TotaledCarEffect;
 
 #pragma endregion
 
