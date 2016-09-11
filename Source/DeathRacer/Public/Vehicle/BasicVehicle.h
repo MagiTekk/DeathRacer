@@ -88,6 +88,14 @@ public:
 	void ApplyDamage(float value);
 	void Die();
 
+	UFUNCTION()
+		void OnEffectFinished();
+#pragma endregion
+
+#pragma region Timer
+private:
+
+	FTimerHandle _TimerHandle;
 #pragma endregion
 
 };

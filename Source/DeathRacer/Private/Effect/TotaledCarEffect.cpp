@@ -12,23 +12,13 @@ ATotaledCarEffect::ATotaledCarEffect()
 	DestructibleMesh = CreateDefaultSubobject<UDestructibleComponent>(TEXT("DestructibleMesh"));
 	DestructibleMesh->SetDestructibleMesh(destructibleCube.Object);
 	DestructibleMesh->SetMobility(EComponentMobility::Movable);
-	DestructibleMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	
 	DestructibleMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	DestructibleMesh->SetCollisionObjectType(ECollisionChannel::ECC_Vehicle);
 
-	//Block All!
-	DestructibleMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
-
-	//ignore only vehicle and pawn
-	DestructibleMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
-	DestructibleMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Vehicle, ECollisionResponse::ECR_Ignore);
+	EnableCollisions();
 	
-	
-	//DestructibleMesh->SetCollisionObjectType(ECollisionChannel::ECC_Vehicle);
-	
-	//DestructibleMesh->SetVisibility(false);
+	DestructibleMesh->SetVisibility(false);
 	DestructibleMesh->Deactivate();
 	RootComponent = DestructibleMesh;
 
@@ -36,12 +26,27 @@ ATotaledCarEffect::ATotaledCarEffect()
 	ParticleEffectReference = flashEmitter.Object;
 
 	ParticleEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleEffect"));
-	//ParticleEffect->SetRelativeScale3D(FVector(3.0f, 3.0f, 3.0f));
+	ParticleEffect->SetRelativeScale3D(FVector(3.0f, 3.0f, 3.0f));
 	ParticleEffect->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	ConstructorHelpers::FObjectFinder<USoundCue> bulletSpawnSound(TEXT("SoundCue'/Game/StarterContent/Audio/Explosion_Cue.Explosion_Cue'"));
 	SoundCueEffect = bulletSpawnSound.Object;
-	
+}
+
+void ATotaledCarEffect::EnableCollisions()
+{
+	//Block All!
+	DestructibleMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+
+	//ignore only vehicle and pawn
+	DestructibleMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+	DestructibleMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Vehicle, ECollisionResponse::ECR_Ignore);
+}
+
+void ATotaledCarEffect::DisableCollisions()
+{
+	//Ignore All!
+	DestructibleMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 }
 
 // Called when the game starts
@@ -59,11 +64,31 @@ void ATotaledCarEffect::Tick(float DeltaTime)
 
 void ATotaledCarEffect::ActivateEffect()
 {
-	DestructibleMesh->ApplyDamage(200.0f, this->GetActorLocation(), FVector(10.0f, 10.0f, 10.0f), 50.0f);
+	//TODO nullBot: instantiate a destructible mesh right here instead of using one as a mesh, we will need this effect later on
+
+	DestructibleMesh->Activate();
+	DestructibleMesh->SetVisibility(true);
+	DestructibleMesh->ApplyRadiusDamage(100.0f, this->GetActorLocation(), 360.0f, 6000.0f, true);
 
 	//spawn effect
 	ParticleEffect->SetTemplate(ParticleEffectReference);
 
 	//play sound
 	UGameplayStatics::PlaySoundAtLocation(this, SoundCueEffect, GetActorLocation());
+}
+
+void ATotaledCarEffect::DeactivateEffect()
+{
+	DestructibleMesh->SetVisibility(false);
+	DisableCollisions();
+}
+
+//should I kill the effect or is it better to just deactivate it?, it depends on the game I guess, If I will use the same vehicle again then do not destroy
+void ATotaledCarEffect::Die()
+{
+	//get rid of the dynamite
+	DestructibleMesh->DestroyComponent();
+
+	//destroy
+	Destroy();
 }

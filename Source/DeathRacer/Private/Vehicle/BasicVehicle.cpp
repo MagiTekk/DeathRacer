@@ -33,6 +33,7 @@ ABasicVehicle::ABasicVehicle()
 	TotaledCarEffect = CreateDefaultSubobject<UChildActorComponent>(TEXT("TotaledCarEffect"));
 	TotaledCarEffect->SetChildActorClass(ATotaledCarEffect::StaticClass());
 	TotaledCarEffect->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	TotaledCarEffect->Deactivate();
 }
 
 void ABasicVehicle::BeginPlay()
@@ -158,13 +159,11 @@ void ABasicVehicle::ApplyDamage(float value)
 
 void ABasicVehicle::Die()
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 2.0, FColor::Yellow, FString::FString("I DIED!!: %s")); //_driverName.ToString()
 	//GEngine->AddOnScreenDebugMessage(-1, 2.0, FColor::Red, FString::Printf(TEXT("Some variable values: x: %f, y: %f"), x, y));
-
 	GEngine->AddOnScreenDebugMessage(-1, 2.0, FColor::Yellow, FString::Printf(TEXT("I DIED!!: %s"), *driverName.ToString()));
 
-	//activate
-	//TotaledCarEffect->Activate(); ??
+	//trigger effect
+	TotaledCarEffect->Activate();
 	ATotaledCarEffect* carEffect = Cast<ATotaledCarEffect>(TotaledCarEffect->GetChildActor());
 	if (carEffect)
 	{
@@ -172,4 +171,14 @@ void ABasicVehicle::Die()
 	}
 
 	_isDead = true;
+
+	//handle deactivation
+	GetWorld()->GetTimerManager().SetTimer(_TimerHandle, this, &ABasicVehicle::OnEffectFinished, 4.0f, false);
+}
+
+void ABasicVehicle::OnEffectFinished()
+{
+	GetWorld()->GetTimerManager().ClearTimer(_TimerHandle);
+	ATotaledCarEffect* carEffect = Cast<ATotaledCarEffect>(TotaledCarEffect->GetChildActor());
+	carEffect->DeactivateEffect();
 }

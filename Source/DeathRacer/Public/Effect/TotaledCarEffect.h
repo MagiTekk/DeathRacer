@@ -48,6 +48,18 @@ public:
 	UFUNCTION()
 		void ActivateEffect();
 
+	UFUNCTION()
+		void DeactivateEffect();
+
+	UFUNCTION()
+		void EnableCollisions();
+
+	UFUNCTION()
+		void DisableCollisions();
+
+	UFUNCTION()
+		void Die();
+
 #pragma endregion
 
 };
