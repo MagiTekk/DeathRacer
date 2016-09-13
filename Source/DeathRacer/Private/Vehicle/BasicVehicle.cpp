@@ -173,12 +173,12 @@ void ABasicVehicle::Die()
 	_isDead = true;
 
 	//handle deactivation
-	GetWorld()->GetTimerManager().SetTimer(_TimerHandle, this, &ABasicVehicle::OnEffectFinished, 4.0f, false);
+	GetWorld()->GetTimerManager().SetTimer(_TimerHandle, this, &ABasicVehicle::OnEffectFinished, 6.0f, false);
 }
 
 void ABasicVehicle::OnEffectFinished()
 {
 	GetWorld()->GetTimerManager().ClearTimer(_TimerHandle);
 	ATotaledCarEffect* carEffect = Cast<ATotaledCarEffect>(TotaledCarEffect->GetChildActor());
-	carEffect->DeactivateEffect();
+	carEffect->RemoveDebris();
 }

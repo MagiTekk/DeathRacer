@@ -22,16 +22,20 @@ public:
 #pragma region Components
 private:
 
-	UParticleSystem* ParticleEffectReference;
+	UParticleSystem* ExplosionEffectReference;
+	UParticleSystem* FireEffectReference;
 	class ADestructibleBox* DestructibleBox;
 
 public:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Particle")
-		UParticleSystemComponent* ParticleEffect;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ArrowComponent")
+		UArrowComponent* ArrowComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
-		UDestructibleComponent* DestructibleMesh;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Particle")
+		UParticleSystemComponent* ExplosionParticleEffect;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Particle")
+		UParticleSystemComponent* FireParticleEffect;
 
 #pragma endregion
 
@@ -39,7 +43,13 @@ public:
 public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
-		USoundCue* SoundCueEffect;
+		USoundCue* ExplosionSoundEffect;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+		USoundCue* FireSoundEffect;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+		UAudioComponent* FireAudioComponent;
 
 #pragma endregion
 
@@ -50,13 +60,10 @@ public:
 		void ActivateEffect();
 
 	UFUNCTION()
+		void RemoveDebris();
+
+	UFUNCTION()
 		void DeactivateEffect();
-
-	UFUNCTION()
-		void EnableCollisions();
-
-	UFUNCTION()
-		void DisableCollisions();
 
 	UFUNCTION()
 		void Die();

@@ -15,6 +15,7 @@ ADestructibleBox::ADestructibleBox()
 
 	DestructibleMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	DestructibleMesh->SetCollisionObjectType(ECollisionChannel::ECC_Vehicle);
+	RootComponent = DestructibleMesh;
 
 	EnableCollisions();
 }
