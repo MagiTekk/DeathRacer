@@ -23,6 +23,7 @@ public:
 private:
 
 	UParticleSystem* ParticleEffectReference;
+	class ADestructibleBox* DestructibleBox;
 
 public:
 
