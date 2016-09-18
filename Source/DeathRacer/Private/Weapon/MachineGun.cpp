@@ -41,7 +41,7 @@ AMachineGun::AMachineGun()
 	BulletSpawnEffect->SetChildActorClass(ABulletSpawnEffect::StaticClass());
 	BulletSpawnEffect->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
-	//balancing needed!
+	//balancing needed! - I added this because I want the machine gun declare the damage it does, so that we can have better machine guns!
 	damageValue = 15.0f;
 }
 

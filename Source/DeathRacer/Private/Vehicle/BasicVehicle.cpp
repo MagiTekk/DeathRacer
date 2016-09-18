@@ -104,27 +104,42 @@ void ABasicVehicle::SetupPlayerInputComponent(class UInputComponent* InputCompon
 
 void ABasicVehicle::MoveForward(float value)
 {
-	GetVehicleMovement()->SetThrottleInput(value);
+	if (!_isDead)
+	{
+		GetVehicleMovement()->SetThrottleInput(value);
+	}
 }
 
 void ABasicVehicle::MoveRight(float value)
 {
-	GetVehicleMovement()->SetSteeringInput(value);
+	if (!_isDead)
+	{
+		GetVehicleMovement()->SetSteeringInput(value);
+	}
 }
 
 void ABasicVehicle::HandbrakeOn()
 {
-	GetVehicleMovement()->SetHandbrakeInput(true);
+	if (!_isDead)
+	{
+		GetVehicleMovement()->SetHandbrakeInput(true);
+	}
 }
 
 void ABasicVehicle::HandbrakeOff()
 {
-	GetVehicleMovement()->SetHandbrakeInput(false);
+	if (!_isDead)
+	{
+		GetVehicleMovement()->SetHandbrakeInput(false);
+	}
 }
 
 void ABasicVehicle::ApplyTurbo()
 {
-	//apply turbo
+	if (!_isDead)
+	{
+		//apply turbo
+	}
 }
 
 
@@ -149,7 +164,10 @@ void ABasicVehicle::CeaseMachineGunFire()
 
 void ABasicVehicle::ApplyDamage(float value)
 {
-	_health = _health - (value / armorValue);
+	if (!_isDead)
+	{
+		_health = _health - (value / armorValue);
+	}
 
 	if (_health <= 0 && !_isDead)
 	{
@@ -159,6 +177,11 @@ void ABasicVehicle::ApplyDamage(float value)
 
 void ABasicVehicle::Die()
 {
+	if (_isDead)
+	{
+		return;
+	}
+
 	//GEngine->AddOnScreenDebugMessage(-1, 2.0, FColor::Red, FString::Printf(TEXT("Some variable values: x: %f, y: %f"), x, y));
 	GEngine->AddOnScreenDebugMessage(-1, 2.0, FColor::Yellow, FString::Printf(TEXT("I DIED!!: %s"), *driverName.ToString()));
 

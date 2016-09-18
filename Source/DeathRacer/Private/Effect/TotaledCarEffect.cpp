@@ -32,6 +32,8 @@ ATotaledCarEffect::ATotaledCarEffect()
 	FireSoundEffect = fireSoundCue.Object;
 
 	FireAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("FireAudioComponent"));
+	FireAudioComponent->SetVolumeMultiplier(2.0f);
+	FireAudioComponent->SetRelativeScale3D(FVector(20.0f, 20.0f, 20.0f));
 	FireAudioComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
